@@ -1,6 +1,11 @@
 let display = document.getElementById("display");
 
 function appendValue(value) {
+  const lastChar = display.value.slice(-1);
+  const operators = "+-*/.%";
+
+  if (operators.includes(value) && operators.includes(lastChar)) return;
+
   display.value += value;
 }
 
@@ -14,13 +19,13 @@ function deleteChar() {
 
 function calculateResult() {
   try {
-    display.value = eval(display.value);
+    const expression = display.value.replace(/%/g, '/100');
+    display.value = eval(expression);
   } catch (e) {
     display.value = "Error";
   }
 }
 
-// Optional: Add keyboard support
 document.addEventListener("keydown", function (e) {
   if ((e.key >= "0" && e.key <= "9") || "+-*/.%".includes(e.key)) {
     appendValue(e.key);
